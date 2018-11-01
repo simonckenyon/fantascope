@@ -72,10 +72,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        log.debug("initAdapter:")
         list.adapter = adapter
         viewModel.movies.observe(this, Observer<List<Movie>> {
-            log.debug("initAdapter: movies=$it")
             list.setEmptyView(emptyView)
             if (it.isNotEmpty()) {
                 adapter.submitList(it)

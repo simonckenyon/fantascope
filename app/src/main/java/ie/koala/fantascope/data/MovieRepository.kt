@@ -21,8 +21,6 @@ import ie.koala.fantascope.api.MovieService
 import ie.koala.fantascope.api.getMovie
 import ie.koala.fantascope.db.MovieLocalCache
 import ie.koala.fantascope.model.MovieResult
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import java.util.*
 
 /**
@@ -62,12 +60,10 @@ class MovieRepository(
     }
 
     private fun requestAndSaveData(@Suppress("UNUSED_PARAMETER")request: String) {
-        log.debug("requestAndSaveData:")
         if (isRequestInProgress) return
 
         isRequestInProgress = true
         getMovie(service, BuildConfig.ApiKeyV3, Locale.getDefault().toString(), page, { movies ->
-            log.debug("requestAndSaveData: inserting in cache")
             cache.insert(movies) {
                 page += 1
                 isRequestInProgress = false
@@ -79,8 +75,6 @@ class MovieRepository(
     }
 
     companion object {
-        val log: Logger = LoggerFactory.getLogger(MovieRepository::class.java)
-
         /*
          * According to https://www.themoviedb.org/talk/587bea71c3a36846c300ff73
          * movies are always sent back in blocks of 20

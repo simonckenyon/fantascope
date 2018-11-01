@@ -29,8 +29,6 @@ fun getMovie(
     onSuccess: (movies: List<Movie>) -> Unit,
     onError: (error: String) -> Unit) {
 
-    log.debug("getMovie: here we go!")
-
     service.getMoviesFromTheMovieDatabase(key, language, page).enqueue(
             object : Callback<MoviesResponse> {
                 override fun onFailure(call: Call<MoviesResponse>?, t: Throwable) {
@@ -40,7 +38,6 @@ fun getMovie(
                 }
 
                 override fun onResponse(call: Call<MoviesResponse>, response: Response<MoviesResponse>) {
-                    log.debug("getMovie.onResponse:")
                     if (response.isSuccessful) {
                         val movies: List<Movie>? = response.body()?.movies
                         if (movies != null) {
