@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">Fantascope</string>
+
+    <string name="button_ok">OK</string>
+    <string name="button_cancel">Cancel</string>
+
+    <string name="action_refresh">Refresh</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="message_no_movies">Could not get any movie data</string>
+    <string name="message_unknown_date">Unknown date</string>
+    <string name="content_description_poster">poster</string>
+
 </resources>
