@@ -35,6 +35,7 @@ import java.util.*
  */
 class MoviesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+    private val pos = view.findViewById(R.id.pos) as TextView
     private val title = view.findViewById(R.id.title) as TextView
     private val poster = view.findViewById(R.id.poster) as ImageView
     private val voteAverage = view.findViewById(R.id.voteAverage) as TextView
@@ -51,17 +52,18 @@ class MoviesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         }
     }
 
-    fun bind(movie: Movie?) {
+    fun bind(movie: Movie?, position: Int) {
         if (movie == null) {
             log.error("bind: movie is empty?")
         } else {
-            showMovie(itemView, movie)
+            showMovie(itemView, movie, position)
         }
     }
 
-    private fun showMovie(view: View, movie: Movie) {
+    private fun showMovie(view: View, movie: Movie, position: Int) {
         this.movie = movie
 
+        pos.text = position.toString()
         title.text = movie.title
         voteAverage.text = String.format(Locale.getDefault(), "%2.2f", movie.voteAverage)
         overview.text = movie.overview

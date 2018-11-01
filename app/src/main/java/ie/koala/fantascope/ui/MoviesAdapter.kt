@@ -35,7 +35,7 @@ class MoviesAdapter: ListAdapter<Movie, RecyclerView.ViewHolder>(Movies_COMPARAT
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = getItem(position)
         if (item != null) {
-            (holder as MoviesViewHolder).bind(item)
+            (holder as MoviesViewHolder).bind(item, position + 1)
         } else {
             log.error("onBindViewHolder: item is null")
         }
