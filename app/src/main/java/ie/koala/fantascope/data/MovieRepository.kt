@@ -61,7 +61,7 @@ class MovieRepository(
         requestAndSaveData(request)
     }
 
-    private fun requestAndSaveData(request: String) {
+    private fun requestAndSaveData(@Suppress("UNUSED_PARAMETER")request: String) {
         log.debug("requestAndSaveData:")
         if (isRequestInProgress) return
 

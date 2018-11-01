@@ -45,7 +45,7 @@ class MoviesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
     init {
         view.setOnClickListener {
-            movie?.id?.let { id ->
+            movie?.id?.let {
                 // TODO!
                 // display details about this movie
             }
