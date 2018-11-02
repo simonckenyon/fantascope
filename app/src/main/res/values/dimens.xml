@@ -5,4 +5,6 @@
 
     <dimen name="no_weather_text_size">24sp</dimen>
 
+    <dimen name="app_bar_height">200dp</dimen>
+
 </resources>

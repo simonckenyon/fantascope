@@ -6,14 +6,46 @@ apply plugin: "de.mannodermaus.android-junit5"
 
 android {
     compileSdkVersion 28
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
     defaultConfig {
-        applicationId "ie.koala.fantascope"
+        applicationId 'ie.koala.fantascope'
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        resConfigs "en"
+
+        def versionMajor = 1
+        def versionMinor = 1
+        def versionPatch = 0
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        def versionPropsFile = file('version.properties')
+        def code
+
+        if (versionPropsFile.canRead()) {
+            Properties versionProps = new Properties()
+            versionProps.load(new FileInputStream(versionPropsFile))
+            code = versionProps['VERSION_CODE'].toInteger() + 1
+            versionProps['VERSION_CODE'] = code.toString()
+            versionProps.store(versionPropsFile.newWriter(), null)
+        } else {
+            throw new GradleException("Could not read version.properties!")
+        }
+
+        buildConfigField 'String', 'BUILD_TIME', "\"${buildTime()}\""
+        buildConfigField 'String', 'GIT_HASH', "\"${gitSha()}\""
+
+        versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+        versionCode code
     }
+
     buildTypes {
         debug {
             buildConfigField 'String', "ApiKeyV3", Fantascope_V3ApiKey
@@ -27,10 +59,36 @@ android {
             resValue 'string', "api_key_v3", Fantascope_V3ApiKey
         }
     }
+
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+    }
+
+    dataBinding {
+        enabled true
+    }
 }
 
 androidExtensions {
     experimental = true
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == "com.android.support") {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion "26.+"
+            }
+        }
+    }
 }
 
 dependencies {
@@ -81,6 +139,14 @@ dependencies {
         exclude group: "com.android.support"
     }
 
+    // misc
+    implementation "com.google.guava:guava:24.1-jre"
+    implementation("info.bliki.wiki:bliki-core:3.1.0") {
+        exclude group: "com.github.tony19", module: "logback-android"
+        exclude group: "ch.qos.logback", module: "logback-classic"
+        exclude group: "org.slf4j", module: "slf4j-api"
+    }
+
     // logging
     api 'org.slf4j:slf4j-api:1.7.25'
     api 'org.slf4j:jul-to-slf4j:1.7.25'
@@ -102,4 +168,12 @@ dependencies {
     testImplementation "junit:junit:4.12"
     testRuntimeOnly "org.junit.vintage:junit-vintage-engine:5.3.1"
 
+}
+
+static def gitSha() {
+    return 'git rev-parse --short HEAD'.execute().text.trim()
+}
+
+static def buildTime() {
+    return new Date().format("yyyy-MM-dd'T'HH:mm:ssZ", TimeZone.getTimeZone("UTC"))
 }

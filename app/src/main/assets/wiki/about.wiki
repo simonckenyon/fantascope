@@ -1,0 +1,35 @@
+== About Fantascope ==
+
+This Android app was developed by Simon Kenyon of The Koala Computer Company Limited.
+
+See [https://en.wikipedia.org/wiki/Phenakistiscope wikipedia] for the meaning of the name.
+
+This is an Android app which connects to themoviedb.org and gets information about movies.
+
+It currently displays the top rated movies in descending order.
+
+It is build using the latest recommendations from google (Architecture Components).
+
+It uses:
+
+* AndroidX
+* LiveData
+* ViewModel
+* Room
+* Retrofit2
+* Moshi
+* Glide
+* Bliki
+* Logback
+
+The code is 100% Kotlin.
+
+=== App Build Info ===
+
+Timestamp: <info timestamp="true" />
+
+Git Hash: <info githash="true" />
+
+Version: <info name="true" />
+
+Build Number: <info code="true" />
