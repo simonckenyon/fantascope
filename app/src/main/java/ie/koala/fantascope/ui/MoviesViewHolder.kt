@@ -35,7 +35,6 @@ import java.util.*
  */
 class MoviesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
-    private val pos = view.findViewById(R.id.pos) as TextView
     private val title = view.findViewById(R.id.title) as TextView
     private val poster = view.findViewById(R.id.poster) as ImageView
     private val voteAverage = view.findViewById(R.id.voteAverage) as TextView
@@ -56,22 +55,24 @@ class MoviesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         if (movie == null) {
             log.error("bind: movie is empty?")
         } else {
-            showMovie(itemView, movie, position)
+            showMovie(itemView, movie)
         }
     }
 
-    private fun showMovie(view: View, movie: Movie, position: Int) {
+    private fun showMovie(view: View, movie: Movie) {
         this.movie = movie
 
-        pos.text = position.toString()
         title.text = movie.title
         voteAverage.text = String.format(Locale.getDefault(), "%2.2f", movie.voteAverage)
         overview.text = movie.overview
 
-        val url = getPosterUrl(movie.posterPath)
-        Glide.with(view)
-            .load(url)
-            .into(poster)
+        val posterPath = movie.posterPath
+        if (posterPath != null) {
+            val url = getPosterUrl(posterPath)
+            Glide.with(view)
+                .load(url)
+                .into(poster)
+        }
     }
 
     private fun getPosterUrl(posterPath: String): String {

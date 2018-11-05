@@ -20,6 +20,8 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="invalid_url">Invalid URL</string>
     <string name="title_activity_settings">Settings</string>
+    <string name="title_search">Search</string>
+    <string name="hint_search">Search by title</string>
 
 
 </resources>

@@ -21,7 +21,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-fun getMovie(
+fun topRatedMovies(
     service: MovieService,
     key: String,
     language: String,
@@ -29,40 +29,79 @@ fun getMovie(
     onSuccess: (movies: List<Movie>) -> Unit,
     onError: (error: String) -> Unit) {
 
-    service.getMoviesFromTheMovieDatabase(key, language, page).enqueue(
-            object : Callback<MoviesResponse> {
-                override fun onFailure(call: Call<MoviesResponse>?, t: Throwable) {
-                    val message = t.message ?: "unknown error"
-                    log.error("getMovie.onFailure: $message")
-                    onError(message)
-                }
+    service.topRatedMovies(key, language, page).enqueue(
+        object : Callback<MoviesResponse> {
+            override fun onFailure(call: Call<MoviesResponse>?, t: Throwable) {
+                val message = t.message ?: "unknown error"
+                log.error("topRatedMovies.onFailure: $message")
+                onError(message)
+            }
 
-                override fun onResponse(call: Call<MoviesResponse>, response: Response<MoviesResponse>) {
-                    if (response.isSuccessful) {
-                        val movies: List<Movie>? = response.body()?.movies
-                        if (movies != null) {
-                            onSuccess(movies)
-                        } else {
-                            onError("movies is null")
-                        }
+            override fun onResponse(call: Call<MoviesResponse>, response: Response<MoviesResponse>) {
+                if (response.isSuccessful) {
+                    val movies: List<Movie>? = response.body()?.movies
+                    if (movies != null) {
+                        onSuccess(movies)
                     } else {
-                        onError(response.errorBody()?.string() ?: "Unknown error")
+                        onError("topRatedMovies is null")
                     }
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
                 }
             }
+        }
+    )
+}
+
+fun searchMovies(
+    service: MovieService,
+    query: String,
+    key: String,
+    language: String,
+    page: Int,
+    onSuccess: (movies: List<Movie>) -> Unit,
+    onError: (error: String) -> Unit) {
+
+    service.searchMovies(query, key, language, page).enqueue(
+        object : Callback<MoviesResponse> {
+            override fun onFailure(call: Call<MoviesResponse>?, t: Throwable) {
+                val message = t.message ?: "unknown error"
+                log.error("topRatedMovies.onFailure: $message")
+                onError(message)
+            }
+
+            override fun onResponse(call: Call<MoviesResponse>, response: Response<MoviesResponse>) {
+                if (response.isSuccessful) {
+                    val movies: List<Movie>? = response.body()?.movies
+                    if (movies != null) {
+                        onSuccess(movies)
+                    } else {
+                        onError("topRatedMovies is null")
+                    }
+                } else {
+                    onError(response.errorBody()?.string() ?: "Unknown error")
+                }
+            }
+        }
     )
 }
 
 interface MovieService {
-    @GET("top_rated")
-    fun getMoviesFromTheMovieDatabase(@Query("api_key") key: String,
-                                      @Query("language") language: String,
-                                      @Query("page") page: Int): Call<MoviesResponse>
+    @GET("movie/top_rated")
+    fun topRatedMovies(@Query("api_key") key: String,
+                       @Query("language") language: String,
+                       @Query("page") page: Int): Call<MoviesResponse>
+
+    @GET("search/movie")
+    fun searchMovies(@Query("query") query: String,
+                     @Query("api_key") key: String,
+                     @Query("language") language: String,
+                     @Query("page") page: Int): Call<MoviesResponse>
 
     companion object {
         val log: Logger = LoggerFactory.getLogger(MovieService::class.java)
 
-        private const val BASE_URL = "https://api.themoviedb.org/3/movie/"
+        private const val BASE_URL = "https://api.themoviedb.org/3/"
 
         private const val CACHE_SIZE = (5 * 1024 * 1024).toLong()   // 5 Megabytes
         private const val MAX_AGE = 5                               // The maximum amount of time (5 seconds) that a resource will be considered fresh.

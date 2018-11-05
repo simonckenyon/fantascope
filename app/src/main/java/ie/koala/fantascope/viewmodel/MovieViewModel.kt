@@ -27,12 +27,12 @@ import org.slf4j.LoggerFactory
 
 /**
  * ViewModel for the [MainActivity] activity.
- * The ViewModel works with the [MovieRepository] to get the movieLiveData.
+ * The ViewModel works with the [MovieRepository] to getMovies the movieLiveData.
  */
 class MovieViewModel(private val repository: MovieRepository) : ViewModel() {
 
     private val queryLiveData = MutableLiveData<String>()
-    private val movieResult: LiveData<MovieResult> = Transformations.map(queryLiveData) { request: String -> repository.get(request) }
+    private val movieResult: LiveData<MovieResult> = Transformations.map(queryLiveData) { request: String -> repository.getMovies(request) }
 
     val movies: LiveData<List<Movie>> = Transformations.switchMap(movieResult) { movieResult: MovieResult ->
         movieResult.movieLiveData
@@ -61,11 +61,10 @@ class MovieViewModel(private val repository: MovieRepository) : ViewModel() {
                 "repository=$repository," +
                 "queryLiveData=$queryLiveData," +
                 "movieResult=$movieResult," +
-                "movies=$movies," +
+                "topRatedMovies=$movies," +
                 "networkErrors=$networkErrors" +
                 ")"
     }
-
 
     companion object {
         val log: Logger = LoggerFactory.getLogger(MovieViewModel::class.java)

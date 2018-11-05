@@ -21,7 +21,7 @@ android {
         resConfigs "en"
 
         def versionMajor = 1
-        def versionMinor = 2
+        def versionMinor = 3
         def versionPatch = 0
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
@@ -44,6 +44,13 @@ android {
 
         versionName "${versionMajor}.${versionMinor}.${versionPatch}"
         versionCode code
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation":
+                                     "$projectDir/schemas".toString()]
+            }
+        }
     }
 
     buildTypes {
@@ -73,6 +80,10 @@ android {
 
     dataBinding {
         enabled true
+    }
+
+    sourceSets {
+        androidTest.assets.srcDirs += files("$projectDir/schemas".toString())
     }
 }
 

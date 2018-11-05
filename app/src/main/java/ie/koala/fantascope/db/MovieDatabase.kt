@@ -21,14 +21,17 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import ie.koala.fantascope.model.Movie
+import androidx.sqlite.db.SupportSQLiteDatabase
+import androidx.room.migration.Migration
+
 
 /**
  * Database schema that holds the movie
  */
 @Database(
-        entities = [Movie::class],
-        version = 1,
-        exportSchema = false
+    entities = [Movie::class],
+    version = 3,
+    exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class MovieDatabase : RoomDatabase() {
@@ -41,13 +44,25 @@ abstract class MovieDatabase : RoomDatabase() {
         private var INSTANCE: MovieDatabase? = null
 
         fun getInstance(context: Context): MovieDatabase =
-                INSTANCE ?: synchronized(this) {
-                    INSTANCE?: buildDatabase(context).also { INSTANCE = it }
-                }
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
+            }
+
+
+        val MIGRATION_1_2: Migration = object : Migration(1, 2) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // need to drop a "not null constraint" but sqllite doesn't support that
+                // so just recreate the database
+            }
+        }
 
         private fun buildDatabase(context: Context) =
-                Room.databaseBuilder(context.applicationContext,
-                        MovieDatabase::class.java, "movies.db")
-                        .build()
+            Room.databaseBuilder(
+                context.applicationContext,
+                MovieDatabase::class.java, "topRatedMovies.db"
+            )
+                .fallbackToDestructiveMigration()
+                //.addMigrations(MIGRATION_1_2)
+                .build()
     }
 }

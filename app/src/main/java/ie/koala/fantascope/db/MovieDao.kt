@@ -31,8 +31,12 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(movies: List<Movie>)
 
-    // Look for movies that have the highest average vote
+    // Look for topRatedMovies that have the highest average vote
     @Query("SELECT * FROM movie ORDER BY voteAverage DESC")
-    fun movies(): LiveData<List<Movie>>
+    fun topRatedMovies(): LiveData<List<Movie>>
 
+
+    // Search for movies with the query string in the title
+    @Query("SELECT * FROM movie WHERE title LIKE :queryString ORDER BY title ASC")
+    fun searchMovies(queryString: String): LiveData<List<Movie>>
 }

@@ -9,14 +9,14 @@ import com.squareup.moshi.JsonClass
 @Entity
 data class Movie(
     @field:Json(name = "adult") var adult: Boolean = false,
-    @field:Json(name = "backdrop_path") var backdropPath: String = "",
+    @field:Json(name = "backdrop_path") var backdropPath: String? = "",
     @field:Json(name = "genre_ids") var genreIds: List<Long> = listOf(),
     @field:Json(name = "id") @PrimaryKey() var id: Long = 0,
     @field:Json(name = "original_language") var originalLanguage: String = "",
     @field:Json(name = "original_title") var originalTitle: String = "",
     @field:Json(name = "overview") var overview: String = "",
     @field:Json(name = "popularity") var popularity: Double = 0.0,
-    @field:Json(name = "poster_path") var posterPath: String = "",
+    @field:Json(name = "poster_path") var posterPath: String? = "",
     @field:Json(name = "release_date") var releaseDate: String = "",
     @field:Json(name = "title") var title: String = "",
     @field:Json(name = "video") var video: Boolean = true,

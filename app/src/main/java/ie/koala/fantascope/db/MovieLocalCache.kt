@@ -40,8 +40,16 @@ class MovieLocalCache(
     /**
      * Request a LiveData<MoviesResponse> from the Dao
      */
-    fun movies(): LiveData<List<Movie>> {
-        val movieLiveData = movieDao.movies()
+    fun topRatedMovies(): LiveData<List<Movie>> {
+        val movieLiveData = movieDao.topRatedMovies()
+        return movieLiveData
+    }
+
+    /**
+     * Request a LiveData<MoviesResponse> from the Dao
+     */
+    fun searchMovies(queryString: String): LiveData<List<Movie>> {
+        val movieLiveData = movieDao.searchMovies(queryString)
         return movieLiveData
     }
 }
