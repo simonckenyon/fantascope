@@ -4,7 +4,6 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import ie.koala.fantascope.R
 import ie.koala.fantascope.ui.Wiki
-import ie.koala.fantascope.web.AppWikiModel
 import ie.koala.fantascope.web.ViewClient
 import kotlinx.android.synthetic.main.activity_copyright.*
 import org.slf4j.LoggerFactory
@@ -40,7 +39,6 @@ class WikiActivity : AppCompatActivity() {
             toolbar_layout.title = w.title
 
             wiki.webViewClient = ViewClient(null)
-            val wikiModel = AppWikiModel()
             wiki.loadUrl(url)
         } catch (e: Exception) {
             log.debug("onCreateView: exception ", e)

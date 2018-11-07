@@ -51,6 +51,15 @@
                     android:name="android.support.PARENT_ACTIVITY"
                     android:value=".app.MainActivity" />
         </activity>
+        <activity
+                android:name=".app.DetailActivity"
+                android:parentActivityName=".app.MainActivity"
+                android:theme="@style/AppTheme.NoActionBar"
+                android:windowSoftInputMode="adjustResize">
+            <meta-data
+                    android:name="android.support.PARENT_ACTIVITY"
+                    android:value=".app.MainActivity" />
+        </activity>
 
     </application>
 

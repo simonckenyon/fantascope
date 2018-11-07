@@ -16,17 +16,21 @@
 
 package ie.koala.fantascope.ui
 
+import android.app.ActivityOptions
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import ie.koala.fantascope.R
+import ie.koala.fantascope.app.DetailActivity
 import ie.koala.fantascope.model.Movie
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import com.bumptech.glide.Glide
 import java.util.*
 
 
@@ -43,10 +47,15 @@ class MoviesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private var movie: Movie? = null
 
     init {
-        view.setOnClickListener {
-            movie?.id?.let {
-                // TODO!
+        view.setOnClickListener { view ->
+            val context = view.context
+            movie?.let { clickedMovie: Movie ->
                 // display details about this movie
+                val context = view.context
+                log.debug("onItemClick: movie=${clickedMovie.title}")
+                val intent = DetailActivity.newIntent(context, clickedMovie)
+                val options = ActivityOptions.makeSceneTransitionAnimation(context as AppCompatActivity, title, "movieTitle")
+                context.startActivity(intent, options.toBundle())
             }
         }
     }
@@ -85,8 +94,7 @@ class MoviesViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private const val POSTER_PREFIX = "https://image.tmdb.org/t/p/w500/"
 
         fun create(parent: ViewGroup): MoviesViewHolder {
-            val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.item_movie, parent, false)
+            val view = LayoutInflater.from(parent.context).inflate(R.layout.item_movie, parent, false)
             return MoviesViewHolder(view)
         }
     }

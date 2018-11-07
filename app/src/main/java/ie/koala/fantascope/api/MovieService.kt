@@ -101,7 +101,8 @@ interface MovieService {
     companion object {
         val log: Logger = LoggerFactory.getLogger(MovieService::class.java)
 
-        private const val BASE_URL = "https://api.themoviedb.org/3/"
+        const val BASE_URL = "https://api.themoviedb.org/3/"
+        const val WEBSITE_BASE_URL = "https://www.themoviedb.org/movie/"
 
         private const val CACHE_SIZE = (5 * 1024 * 1024).toLong()   // 5 Megabytes
         private const val MAX_AGE = 5                               // The maximum amount of time (5 seconds) that a resource will be considered fresh.

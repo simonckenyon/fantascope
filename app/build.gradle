@@ -67,6 +67,14 @@ android {
         }
     }
 
+    lintOptions {
+        //checkReleaseBuilds false
+
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+
     packagingOptions {
         exclude 'META-INF/DEPENDENCIES'
         exclude 'META-INF/LICENSE'
@@ -107,13 +115,13 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 
     // AndroidX
-    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.appcompat:appcompat:1.0.1'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.0-alpha2'
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'androidx.cardview:cardview:1.0.0'
 
     // architecture components
-    implementation 'android.arch.paging:runtime:1.0.1'
+    implementation 'androidx.paging:paging-runtime:2.1.0-beta01'
     implementation('android.arch.work:work-runtime:1.0.0-alpha09') {
         exclude group: 'com.google.guava', module: 'listenablefuture'
     }
@@ -121,7 +129,6 @@ dependencies {
     // ViewModel and LiveData
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     kapt 'androidx.lifecycle:lifecycle-compiler:2.0.0'
-
 
     // Room components
     implementation 'androidx.room:room-runtime:2.1.0-alpha02'
@@ -157,6 +164,7 @@ dependencies {
         exclude group: "ch.qos.logback", module: "logback-classic"
         exclude group: "org.slf4j", module: "slf4j-api"
     }
+    implementation 'net.opacapp:multiline-collapsingtoolbar:27.1.1'
 
     // logging
     api 'org.slf4j:slf4j-api:1.7.25'
